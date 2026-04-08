@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  
+  /* Retain typical tailwind alias names but map to our new schema */
+  --color-primary: var(--amber);
+  --color-primary-foreground: var(--ink);
+  
+  --color-muted: var(--cream);
+  --color-muted-foreground: var(--muted-text);
+  
+  --color-border: var(--border);
+  --color-card: var(--card-bg);
+
+  /* Extending semantic colors from mock */
+  --color-forest: var(--forest);
+  --color-sky: var(--sky);
+  --color-rose: var(--rose);
+  --color-sand: var(--sand);
+  
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root {
+  /* LIGHT THEME (Vintage Paper) */
+  --ink: #0f0e0c;
+  --paper: #f5f2ec;
+  --cream: #ede9e0;
+  --sand: #d4cfc4;
+  --amber: #c8873a;
+  --amber-light: #e8a855;
+  --forest: #2d5a3d;
+  --sky: #2b6cb0;
+  --rose: #c0392b;
+  --muted-text: #6b6560;
+  --border: rgba(15,14,12,0.1);
+  --card-bg: #ffffff;
+}
+
+.dark {
+  /* DARK THEME — Deep Espresso Academic */
+  --ink: #ede9e0;
+  --paper: #0c0b09;
+  --cream: #181614;
+  --sand: #2e2a24;
+  --amber: #daa04a;
+  --amber-light: #f0be6a;
+  --forest: #5cab78;
+  --sky: #5c9ede;
+  --rose: #e06050;
+  --muted-text: #8a8279;
+  --border: rgba(237,233,224,0.10);
+  --card-bg: #151311;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.dark body::before {
+  opacity: 0.08; /* Slightly stronger noise in dark mode */
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-background/80 backdrop-blur-md border-b border-border;
+  }
+}
