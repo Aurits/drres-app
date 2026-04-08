@@ -35,7 +35,7 @@ export function AskAIDrawer() {
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 className="fixed z-50 border border-border bg-card shadow-2xl outline-none flex flex-col
                   bottom-0 right-0 w-full h-[85vh] rounded-t-2xl
-                  sm:bottom-20 sm:right-5 sm:w-[380px] sm:h-auto sm:max-h-[520px] sm:rounded-2xl"
+                  sm:bottom-20 sm:right-5 sm:w-[380px] sm:h-[600px] sm:max-h-[75vh] sm:rounded-2xl"
               >
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
