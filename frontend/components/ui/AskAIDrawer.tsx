@@ -3,7 +3,7 @@
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, X, Send, AlertTriangle } from "lucide-react";
+import { Bot, X, Send, Info } from "lucide-react";
 
 export function AskAIDrawer() {
   const [open, setOpen] = useState(false);
@@ -11,8 +11,8 @@ export function AskAIDrawer() {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <button className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-          <Bot className="h-6 w-6" />
+        <button className="fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+          <Bot className="h-5 w-5" />
         </button>
       </Dialog.Trigger>
 
@@ -33,53 +33,58 @@ export function AskAIDrawer() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 20, scale: 0.95 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="fixed bottom-24 right-6 z-50 w-full max-w-[400px] flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-2xl outline-none"
+                className="fixed z-50 border border-border bg-card shadow-2xl outline-none flex flex-col
+                  bottom-0 right-0 w-full h-[85vh] rounded-t-2xl
+                  sm:bottom-20 sm:right-5 sm:w-[380px] sm:h-auto sm:max-h-[520px] sm:rounded-2xl"
               >
-                <div className="flex items-center justify-between border-b border-border pb-4">
-                  <Dialog.Title className="text-lg font-semibold flex items-center gap-2">
-                    <Bot className="h-5 w-5 text-primary" />
-                    Repository AI Assistant
+                {/* Header */}
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
+                  <Dialog.Title className="text-[14px] font-semibold flex items-center gap-2 text-foreground">
+                    <Bot className="h-4 w-4 text-primary" />
+                    AI Assistant
                   </Dialog.Title>
                   <Dialog.Close asChild>
-                    <button className="rounded-full p-2 hover:bg-muted transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                      <X className="h-4 w-4" />
+                    <button className="rounded-full p-1.5 hover:bg-muted transition-colors outline-none cursor-pointer">
+                      <X className="h-3.5 w-3.5" />
                     </button>
                   </Dialog.Close>
                 </div>
                 
-                <Dialog.Description className="text-sm text-muted-foreground">
-                  Ask me questions about any rapid evidence in the repository. My answers will be strictly grounded with citations.
-                </Dialog.Description>
-
-                <div className="flex-1 min-h-[300px] my-2 p-4 rounded-xl bg-muted/30 overflow-y-auto flex flex-col gap-4">
-                  {/* Mock Chat Message */}
-                  <div className="flex gap-3">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Bot className="h-4 w-4 text-primary" />
-                    </div>
-                    <div className="bg-card border border-border rounded-lg rounded-tl-none p-3 text-sm shadow-sm">
-                      <p>Hello! I have indexed 1,240 documents on Dr-RES. How can I help inform your policy work today?</p>
-                    </div>
+                {/* Chat Area */}
+                <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 flex flex-col gap-3">
+                  {/* AI Disclaimer — REQ17 (inline, compact) */}
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-muted/40 rounded-md">
+                    <Info className="w-3 h-3 text-muted-foreground shrink-0" />
+                    <p className="text-[9px] leading-snug text-muted-foreground">
+                      <span className="font-medium">AI-generated</span> · Verify with primary sources
+                    </p>
                   </div>
+
+                  {/* Welcome Message */}
+                  <Dialog.Description asChild>
+                    <div className="flex gap-2.5">
+                      <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <Bot className="h-3.5 w-3.5 text-primary" />
+                      </div>
+                      <div className="bg-muted/40 border border-border rounded-xl rounded-tl-sm px-3 py-2.5 text-[13px] leading-relaxed text-foreground">
+                        Hello! I have indexed <strong>1,240</strong> documents on Dr-RES. Ask me anything about the evidence — I&apos;ll ground my answers with citations.
+                      </div>
+                    </div>
+                  </Dialog.Description>
                 </div>
 
-                {/* AI Disclaimer — REQ17 */}
-                <div className="flex items-start gap-2 px-3 py-2.5 bg-primary/5 rounded-lg border border-primary/15">
-                  <AlertTriangle className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                  <p className="text-[10px] leading-relaxed text-muted-foreground">
-                    <span className="font-semibold text-foreground">AI-generated content.</span> Responses are synthesized from indexed evidence and may not be exhaustive. Always verify with primary sources.
-                  </p>
-                </div>
-
-                <div className="relative mt-2">
-                  <input
-                    type="text"
-                    placeholder="Ask a question..."
-                    className="w-full bg-muted border border-border rounded-full pl-4 pr-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  />
-                  <button className="absolute right-2 top-2 h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-                    <Send className="h-4 w-4 ml-0.5" />
-                  </button>
+                {/* Input */}
+                <div className="px-4 pb-4 pt-2 shrink-0 border-t border-border/50">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Ask a question..."
+                      className="w-full bg-muted/50 border border-border rounded-xl pl-3.5 pr-10 py-2.5 text-[13px] focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/40 transition-all text-foreground placeholder:text-muted-foreground/50"
+                    />
+                    <button className="absolute right-1.5 top-1.5 h-7 w-7 flex items-center justify-center rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer">
+                      <Send className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             </Dialog.Content>
