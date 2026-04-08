@@ -1,122 +1,137 @@
 import Image from "next/image";
-import { ArrowRight, BookOpen, Globe2, ShieldCheck, Users } from "lucide-react";
+import { BookOpen, Globe2, ShieldCheck, Users, MapPin, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col w-full bg-background overflow-hidden relative">
+    <div className="flex flex-col w-full h-[calc(100vh-65px)] min-h-[600px] bg-background overflow-hidden relative">
       
-      {/* Minimalistic Background Effects */}
+      {/* Minimalistic Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[80%] h-[600px] bg-gradient-to-l from-primary/5 to-transparent"></div>
+        <div className="absolute top-0 right-0 w-[80%] h-full bg-gradient-to-l from-primary/5 to-transparent"></div>
         <div className="absolute top-1/4 left-[-10%] w-1/3 h-1/2 bg-gradient-to-r from-blue-500/5 to-transparent blur-3xl"></div>
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_20%,transparent_100%)]"></div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative z-10 w-full pt-16 pb-20 lg:pt-24 lg:pb-32 px-6 lg:px-12">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          
-          <div className="flex-1 flex flex-col items-start xl:pr-10 order-2 lg:order-1">
-            <div className="relative mb-6 pl-4 border-l-2 border-primary/40">
-              <span className="font-mono text-[11px] tracking-[2px] uppercase font-bold text-primary block">
-                Who We Are
-              </span>
-            </div>
+      <div className="relative z-10 flex flex-col h-full">
+        
+        {/* Top Section: Hero */}
+        <div className="flex-1 flex items-center px-6 lg:px-12">
+          <div className="max-w-[1300px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
             
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-[4.2rem] font-bold tracking-tight text-foreground mb-6 leading-[1.1]">
-              Bridging the gap between <span className="text-primary italic font-medium">evidence</span> and policy.
-            </h1>
-            
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl mb-10">
-              The Center for Rapid Evidence Synthesis (ACRES) at Makerere University is dedicated to providing timely, relevant, and high-quality evidence to inform urgent health and social policy decisions across Africa.
-            </p>
+            {/* Left: Text */}
+            <div className="flex flex-col items-start">
+              <div className="relative mb-4 pl-4 border-l-2 border-primary/40">
+                <span className="font-mono text-[10px] tracking-[2px] uppercase font-bold text-primary block">
+                  About ACRES
+                </span>
+              </div>
+              
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-[3.5rem] font-bold tracking-tight text-foreground mb-4 leading-[1.1]">
+                Bridging <span className="text-primary italic font-medium">evidence</span> and policy.
+              </h1>
+              
+              <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed max-w-lg mb-6">
+                The Center for Rapid Evidence Synthesis (ACRES) is a knowledge brokering NGO based in Kampala, Uganda. Building on work begun in 2010 at the College of Health Sciences at Makerere University, we partner with leaders across public health, education, macroeconomics, climate change, and renewable energy — powered by cutting-edge AI and digital tools.
+              </p>
 
-            <div className="flex flex-wrap items-center gap-4">
-              <Link 
-                href="/search"
-                className="px-6 py-3 bg-foreground text-background rounded-xl font-medium hover:bg-foreground/90 transition-all text-sm flex items-center justify-center min-w-[160px]"
-              >
-                Explore Evidence
-              </Link>
-              <Link 
-                href="/dashboard/submit"
-                className="px-6 py-3 bg-transparent border-[1.5px] border-border text-foreground rounded-xl font-medium hover:border-foreground/30 transition-all text-sm flex items-center justify-center gap-2 min-w-[160px]"
-              >
-                Contribute Research
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link 
+                  href="/search"
+                  className="px-5 py-2.5 bg-foreground text-background rounded-xl font-medium hover:bg-foreground/90 transition-all text-sm"
+                >
+                  Explore Evidence
+                </Link>
+                <a 
+                  href="https://acres.or.ug" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-5 py-2.5 border-[1.5px] border-border text-foreground rounded-xl font-medium hover:border-foreground/30 transition-all text-sm"
+                >
+                  Visit acres.or.ug
+                </a>
+              </div>
             </div>
-          </div>
-          
-          {/* Hero Image */}
-          <div className="w-full relative rounded-3xl overflow-hidden aspect-[4/3] lg:aspect-[5/4] shadow-2xl order-1 lg:order-2 border-[6px] border-card">
-             <Image 
+            
+            {/* Right: Image + Contact overlay */}
+            <div className="hidden lg:block w-full relative rounded-2xl overflow-hidden aspect-[4/3] shadow-xl border-[5px] border-card">
+              <Image 
                 src="/about_hero_bg.png" 
                 alt="ACRES researchers collaborating" 
                 fill 
-                className="object-cover hover:scale-105 transition-transform duration-[2s] ease-in-out"
+                className="object-cover"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-6 left-6 right-6">
-                 <p className="text-white/90 font-serif text-lg leading-snug drop-shadow-md">
-                   Our team synthesizing crucial data for the Ministry of Health, Kampala, 2025.
-                 </p>
-              </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Stats Ribbon */}
-      <section className="relative z-10 w-full bg-foreground text-background py-16 px-6">
-         <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-background/10">
-            <div className="flex-1 py-6 md:py-0 md:px-8 text-center flex flex-col items-center">
-              <h3 className="font-serif text-5xl font-bold text-primary mb-2">12+</h3>
-              <p className="font-mono text-[11px] tracking-[1.5px] uppercase text-background/60">African Nations Served</p>
-            </div>
-            <div className="flex-1 py-6 md:py-0 md:px-8 text-center flex flex-col items-center">
-              <h3 className="font-serif text-5xl font-bold mb-2">4,000+</h3>
-              <p className="font-mono text-[11px] tracking-[1.5px] uppercase text-background/60">Indexed Syntheses</p>
-            </div>
-            <div className="flex-1 py-6 md:py-0 md:px-8 text-center flex flex-col items-center">
-              <h3 className="font-serif text-5xl font-bold text-forest mb-2">48h</h3>
-              <p className="font-mono text-[11px] tracking-[1.5px] uppercase text-background/60">Avg. Request Turnaround</p>
-            </div>
-         </div>
-      </section>
-
-      {/* Our Approach */}
-      <section className="relative z-10 w-full py-24 px-6 lg:px-12 bg-muted/20 border-b border-border text-center">
-        <div className="max-w-[800px] mx-auto mb-16">
-          <span className="font-mono text-[10px] tracking-[2px] uppercase font-bold text-muted-foreground block mb-4">Methodology</span>
-          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-foreground mb-6 leading-tight">
-            How we translate global knowledge into local action.
-          </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            The Dr-RES platform is built on a foundation of rigorous methodology, local context, and cutting-edge technology ensuring policymakers get the right answers exactly when they need them.
-          </p>
-        </div>
-
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { icon: BookOpen, title: "Curated Repository", desc: "A living database of rigorously vetted primary studies, reviews, and rapid response briefs." },
-            { icon: Globe2, title: "Contextual Relevance", desc: "Evidence mapped and filtered specifically for Sub-Saharan African policy contexts and the SDGs." },
-            { icon: ShieldCheck, title: "Rigorous Moderation", desc: "All submissions undergo independent expert review before being published to the public library." },
-            { icon: Users, title: "Collaborative Network", desc: "A growing ecosystem of researchers, analysts, and decision-makers working in tandem." },
-          ].map((item, i) => (
-             <div key={i} className="bg-card border border-border p-8 rounded-2xl text-left hover:border-primary/50 transition-colors shadow-sm">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
-                   <item.icon className="w-6 h-6 text-primary" />
+              
+              {/* Contact Card */}
+              <div className="absolute bottom-4 right-4 flex flex-col gap-1.5 p-3.5 bg-background/95 backdrop-blur-md rounded-xl text-foreground text-[11px] shadow-lg border border-border/20">
+                <p className="font-bold text-[9px] uppercase tracking-wider text-primary mb-0.5">Contact</p>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <MapPin className="w-3 h-3 text-primary shrink-0" />
+                  <span>Plot 24, Wampewo Close, Kampala</span>
                 </div>
-                <h3 className="font-serif text-xl font-bold text-foreground mb-3">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-             </div>
-          ))}
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Mail className="w-3 h-3 text-primary shrink-0" />
+                  <span className="font-mono">info@acres.or.ug</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Phone className="w-3 h-3 text-primary shrink-0" />
+                  <span className="font-mono">+256 703 700 265</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
 
+        {/* Bottom: Approach Pillars + Stats */}
+        <div className="shrink-0 border-t border-border bg-card/50 backdrop-blur-sm px-6 lg:px-12 py-5">
+          <div className="max-w-[1300px] mx-auto flex flex-col lg:flex-row items-center gap-6 lg:gap-0">
+            
+            {/* 4 Pillars */}
+            <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              {[
+                { icon: BookOpen, title: "Evidence Synthesis", desc: "Identifying improved pathways for EIDM delivery." },
+                { icon: Globe2, title: "Policy Engagement", desc: "Assessing policy landscapes for key opportunities." },
+                { icon: Users, title: "Capacity Building", desc: "Building researcher and decision-maker capacity." },
+                { icon: ShieldCheck, title: "Research & Innovation", desc: "Exploring strategies for global EIDM effectiveness." },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3 group">
+                  <div className="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
+                    <item.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-[12px] text-foreground leading-tight mb-0.5">{item.title}</h3>
+                    <p className="text-[10px] text-muted-foreground leading-snug">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="hidden lg:block w-px h-14 bg-border mx-6 shrink-0"></div>
+
+            {/* Stats */}
+            <div className="flex items-center gap-6 lg:gap-8 shrink-0">
+              <div className="text-center">
+                <p className="font-serif font-bold text-[28px] text-primary leading-none">16</p>
+                <p className="font-mono text-[8px] tracking-[1.5px] uppercase text-muted-foreground mt-1">Years</p>
+              </div>
+              <div className="w-px h-10 bg-border"></div>
+              <div className="text-center">
+                <p className="font-serif font-bold text-[28px] text-foreground leading-none">4,000+</p>
+                <p className="font-mono text-[8px] tracking-[1.5px] uppercase text-muted-foreground mt-1">Syntheses</p>
+              </div>
+              <div className="w-px h-10 bg-border"></div>
+              <div className="text-center">
+                <p className="font-serif font-bold text-[28px] text-forest leading-none">48h</p>
+                <p className="font-mono text-[8px] tracking-[1.5px] uppercase text-muted-foreground mt-1">Turnaround</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }
