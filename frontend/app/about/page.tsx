@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col w-full h-[calc(100vh-65px)] min-h-[600px] bg-background overflow-hidden relative">
+    <div className="flex flex-col w-full h-[calc(100vh-64px)] bg-background overflow-hidden relative">
       
       {/* Minimalistic Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -27,11 +27,11 @@ export default function AboutPage() {
                 </span>
               </div>
               
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-[3.5rem] font-bold tracking-tight text-foreground mb-4 leading-[1.1]">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-[3.2rem] font-bold tracking-tight text-foreground mb-3 leading-[1.1]">
                 Bridging <span className="text-primary italic font-medium">evidence</span> and policy.
               </h1>
               
-              <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed max-w-lg mb-6">
+              <p className="text-sm md:text-[14px] text-muted-foreground leading-relaxed max-w-lg mb-5">
                 The Center for Rapid Evidence Synthesis (ACRES) is a knowledge brokering NGO based in Kampala, Uganda. Building on work begun in 2010 at the College of Health Sciences at Makerere University, we partner with leaders across public health, education, macroeconomics, climate change, and renewable energy — powered by cutting-edge AI and digital tools.
               </p>
 
@@ -85,7 +85,7 @@ export default function AboutPage() {
         </div>
 
         {/* Bottom: Approach Pillars + Stats */}
-        <div className="shrink-0 border-t border-border bg-card/50 backdrop-blur-sm px-6 lg:px-12 py-5">
+        <div className="shrink-0 border-t border-border bg-card/50 backdrop-blur-sm px-6 lg:px-12 py-4">
           <div className="max-w-[1300px] mx-auto flex flex-col lg:flex-row items-center gap-6 lg:gap-0">
             
             {/* 4 Pillars */}
