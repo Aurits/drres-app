@@ -3,7 +3,7 @@
 import { useEffect, useState, UIEvent } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Sparkles, ExternalLink, Download, Copy, Play } from "lucide-react";
+import { X, Sparkles, ExternalLink, Download, Copy, Play, ShieldCheck, Star, ThumbsUp } from "lucide-react";
 
 interface EvidenceSheetProps {
   open: boolean;
@@ -19,6 +19,8 @@ interface EvidenceSheetProps {
     priorityArea?: string;
     subArea?: string;
     doi?: string;
+    uniqueId?: string;
+    isFeatured?: boolean;
     citation?: string;
   };
 }
@@ -106,6 +108,13 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                         {evidence?.type || 'Primary Study'}
                       </div>
 
+                      {evidence?.isFeatured && (
+                        <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-mono text-[9px] tracking-[2.5px] uppercase px-3 py-1.5 rounded-[4px] mb-5 ml-2 border border-primary/20">
+                          <Star className="w-3 h-3 fill-primary" />
+                          High-Impact Evidence
+                        </div>
+                      )}
+
                       <div className="flex flex-wrap gap-2 mb-6">
                         <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-[1.5px] uppercase px-2.5 py-1.5 border rounded-[4px] bg-forest/10 border-forest/20 text-forest hover:opacity-80 transition-opacity cursor-pointer">
                           <span className="w-1.5 h-1.5 rounded-full bg-forest shrink-0" />
@@ -122,7 +131,7 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                         {evidence?.subArea && (
                           <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-[1.5px] uppercase px-2.5 py-1.5 border rounded-[4px] bg-primary/10 border-primary/20 text-primary hover:opacity-80 transition-opacity cursor-pointer">
                             <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
-                            {evidence.subArea}
+                            {evidence?.subArea}
                           </span>
                         )}
                       </div>
@@ -144,17 +153,21 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                           <div className="font-serif font-bold text-[18px] text-foreground">{evidence?.year || 'N/A'}</div>
                         </div>
                         <div className="flex-1 w-full sm:w-auto px-0 sm:px-5 border-border sm:border-r sm:pt-0 pt-4 sm:mt-0 border-t sm:border-t-0">
-                          <div className="font-mono text-[9px] tracking-[1.5px] uppercase text-muted-foreground mb-1.5">DOI</div>
-                          <a href={evidence?.doi ? `https://doi.org/${evidence.doi}` : '#'} target="_blank" rel="noreferrer" className="font-mono text-[11px] text-primary flex items-center gap-1 hover:underline">
-                            {evidence?.doi || '10.XXXX/XXXX'}
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                          </a>
+                          <div className="font-mono text-[9px] tracking-[1.5px] uppercase text-muted-foreground mb-1.5">Hub ID</div>
+                          <div className="font-mono text-[12px] text-foreground font-bold tracking-[0.5px]">
+                            {evidence?.uniqueId || 'DRRES-PENDING'}
+                          </div>
                         </div>
                         <div className="flex-[1.5] hidden lg:block pl-5">
-                          <div className="font-mono text-[9px] tracking-[1.5px] uppercase text-muted-foreground mb-1.5">Record Source</div>
-                          <div className="text-[12px] text-foreground leadig-[1.4]">
-                            ACRES Evidence Core <br/>
-                            <span className="font-mono text-[10px] text-muted-foreground block mt-0.5">Verified Primary</span>
+                          <div className="font-mono text-[9px] tracking-[1.5px] uppercase text-muted-foreground mb-1.5">Quality Assurance</div>
+                          <div className="flex items-center gap-2">
+                             <div className="w-6 h-6 rounded-full bg-forest/20 flex items-center justify-center text-forest">
+                               <ShieldCheck className="w-4 h-4" />
+                             </div>
+                             <div className="text-[12px] text-foreground font-medium leading-[1.2]">
+                               Verified Peer Review <br/>
+                               <span className="font-mono text-[10px] text-muted-foreground">Panel ID: ACRES-B3</span>
+                             </div>
                           </div>
                         </div>
                       </div>
@@ -264,11 +277,17 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                       {/* Record ID card */}
                       <div className="bg-card border-[1.5px] border-border rounded-xl p-5">
                         <div className="font-mono text-[9px] tracking-[2px] uppercase text-muted-foreground mb-3.5 pb-2.5 border-b border-border">Record Details</div>
-                        <div className="font-mono text-[13px] text-foreground font-medium bg-muted/30 rounded-[5px] px-3 py-2 mb-2.5 tracking-[0.5px]">
-                          ID-{evidence?.title.length || '1117'} · {evidence?.year}-DX
-                        </div>
-                        <div className="text-[11px] text-muted-foreground font-mono">
-                          Added to ACRES Library · {evidence?.year || '2024'}
+                        <div className="flex flex-col gap-3">
+                          <div className="flex items-center justify-between p-2.5 bg-forest/5 border border-forest/20 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <ShieldCheck className="w-3.5 h-3.5 text-forest" />
+                              <span className="font-mono text-[9px] tracking-[1px] font-bold text-forest uppercase">Verified Peer Review</span>
+                            </div>
+                            <span className="font-mono text-[9px] text-forest opacity-70">Panel ACRES-B3</span>
+                          </div>
+                          <div className="text-[11px] text-muted-foreground font-mono pl-1">
+                            Added to Hub Library · {evidence?.year || '2025'}
+                          </div>
                         </div>
                       </div>
 
@@ -298,7 +317,7 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                         
                         <div className="flex justify-between items-center py-2 border-b border-border/60 text-[13px]">
                           <span className="text-muted-foreground">Sample size</span>
-                          <span className="font-semibold text-foreground font-mono text-[12px]">n = {evidence?.title.length ? 12 + evidence.title.length : '144'}</span>
+                          <span className="font-semibold text-foreground font-mono text-[12px]">n = {evidence?.title?.length ? 12 + evidence.title.length : '144'}</span>
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-border/60 text-[13px]">
                           <span className="text-muted-foreground">Study design</span>
@@ -315,6 +334,21 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                         <div className="flex justify-between items-center py-2 text-[13px]">
                           <span className="text-muted-foreground">Quality</span>
                           <span className="font-semibold text-forest font-mono text-[12px]">★ High</span>
+                        </div>
+                      </div>
+
+                      {/* Policy Utility Feedback */}
+                      <div className="bg-primary/5 border-[1.5px] border-primary/20 rounded-xl p-5">
+                        <div className="font-mono text-[9px] tracking-[2px] uppercase text-primary mb-3.5 flex items-center gap-2">
+                          <ThumbsUp className="w-3 h-3" />
+                          Policy Utility
+                        </div>
+                        <p className="text-[11px] text-muted-foreground leading-relaxed mb-4">
+                          Was this synthesis helpful for your evidence-informed policy needs?
+                        </p>
+                        <div className="flex gap-2">
+                          <button className="flex-1 py-2 bg-background border border-border rounded-lg text-[11px] font-semibold hover:border-primary/40 hover:text-primary transition-all">Yes, very helpful</button>
+                          <button className="flex-1 py-2 bg-background border border-border rounded-lg text-[11px] font-semibold hover:border-rose/40 hover:text-rose transition-all">Not relevant</button>
                         </div>
                       </div>
 

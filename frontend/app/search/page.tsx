@@ -21,6 +21,8 @@ export type EvidenceItem = {
   subArea: string;
   doi?: string;
   citation?: string;
+  uniqueId: string;
+  isFeatured?: boolean;
 }
 
 export type TaxonomyNode = {
@@ -68,10 +70,11 @@ export const TAXONOMY_TREE: Record<string, TaxonomyNode[]> = {
 const BASE_MOCK: EvidenceItem[] = [
   {
     id: 1,
+    uniqueId: "DRRES-2018-774",
     title: "\"Give Me Some Time\": Facilitators of and Barriers to Uptake of Home-Based HIV Testing During Household Contact Investigation for Tuberculosis in Kampala, Uganda",
     type: "Primary Study",
     sdg: "SDG 3: Good Health",
-    abstract: "Background: Integrating home-based HIV counseling and testing (HCT) with tuberculosis (TB) evaluation could improve the uptake of HIV testing among household contacts of patients with active TB. We sought to identify the facilitators of and barriers to HCT during household contact investigation for TB in Kampala, Uganda.\n\nMethods: We nested semi-structured interviews with 28 household contacts who were offered home-based HCT in a household-randomized trial of home-based strategies for TB contact investigation. Respondents reflected on their experiences of the home visit, the social context of the household, and their decision to accept or decline HIV testing. We used content analysis to identify and evaluate facilitators of and barriers to testing, then categorized the emergent themes using the Capability, Opportunity, Motivation, and Behavior (COM-B) model.\n\nResults: Facilitators included a preexisting desire to confirm HIV status or to show support for the index TB patient; a perception that home-based services are convenient; and positive perceptions of lay health workers. Key barriers included fear of results and feeling psychologically unprepared to receive results. The social influence of other household members operated as both a facilitator and a barrier.\n\nConclusions: Preexisting motivation, psychological readiness to test, and the social context of the household are major contributors to the decision to test for HIV at home. Uptake might be improved by providing normalizing information about HCT before the visit, by offering a second HCT opportunity, by offering self-tests with follow-up counseling, or by introducing HCT using \"opt-out\" language.",
+    abstract: "Background: Integrating home-based HIV counseling and testing (HCT) with tuberculosis (TB) evaluation could improve the uptake of HIV testing among household contacts of patients with active TB. We sought to identify the facilitators of and barriers to HCT during household contact investigation for TB in Kampala, Uganda.",
     authors: "Armstrong-Hough M, Ggita J, Ayakaka I, Dowdy D, Cattamanchi A, Haberer JE, Katamba A, Davis JL",
     year: "2018",
     country: "Uganda",
@@ -82,6 +85,7 @@ const BASE_MOCK: EvidenceItem[] = [
   },
   {
     id: 2,
+    uniqueId: "DRRES-2024-015",
     title: "Climate-Resilient Agriculture Policies for Sub-Saharan Drylands",
     type: "Systematic Review",
     sdg: "SDG 13: Climate Action",
@@ -94,6 +98,7 @@ const BASE_MOCK: EvidenceItem[] = [
   },
   {
     id: 3,
+    uniqueId: "DRRES-2024-082",
     title: "AI in Primary Education: Infrastructure Requirements for Rural Deployment",
     type: "Policy Brief",
     sdg: "SDG 4: Quality Education",
@@ -119,10 +124,12 @@ const MOCK_EVIDENCE: EvidenceItem[] = Array.from({ length: 60 }).map((_, i) => {
   return {
     ...base,
     id: i + 1,
+    uniqueId: `DRRES-${years[i % years.length]}-${(i + 1).toString().padStart(3, '0')}`,
     title: i < 3 ? base.title : `${base.title} ${i > 10 ? `(Meta-Analysis Vol ${i})` : `(Phase ${i})`}`,
     year: i < 3 ? base.year : years[i % years.length],
     priorityArea: selectedPriorityArea.name,
-    subArea: selectedSubArea
+    subArea: selectedSubArea,
+    isFeatured: i === 1 // Mock one item as featured initially
   };
 });
 
@@ -477,9 +484,14 @@ function SearchContent() {
                     </span>
                   </div>
                   
-                  <h2 className="font-serif text-[18px] leading-[1.45] text-foreground mb-2.5 font-bold group-hover:text-primary transition-colors duration-300">
-                    {item.title}
-                  </h2>
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-3">
+                    <h3 className="font-serif text-[18px] md:text-[20px] leading-[1.45] text-foreground font-bold group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h3>
+                    <div className="shrink-0 flex items-center gap-2">
+                      <span className="font-mono text-[10px] text-muted-foreground/60 tracking-wider">ID: {item.uniqueId}</span>
+                    </div>
+                  </div>
                   
                   <p className="text-[13px] leading-[1.75] text-muted-foreground mb-4 line-clamp-2">
                     {item.abstract}

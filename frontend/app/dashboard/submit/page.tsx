@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { 
   Upload, FileText, Check, ChevronRight, ChevronLeft, X, 
-  Sparkles, Eye, AlertCircle, Save, Send
+  Sparkles, Eye, AlertCircle, Save, Send, ShieldCheck
 } from "lucide-react";
 
 const STEPS = [
@@ -346,7 +346,14 @@ export default function SubmitPage() {
         {step === 3 && (
           <div className="p-6 lg:p-8">
             <h2 className="font-serif text-[20px] font-bold text-foreground mb-2">Review Your Submission</h2>
-            <p className="text-[13px] text-muted-foreground mb-6">Preview how your evidence will appear in the library.</p>
+            <p className="text-[13px] text-muted-foreground mb-4">Preview how your evidence will appear in the library.</p>
+
+            <div className="flex items-center gap-2 p-3 bg-muted/20 border border-border rounded-lg mb-6 max-w-2xl">
+              <ShieldCheck className="w-4 h-4 text-forest shrink-0" />
+              <p className="text-[11px] text-muted-foreground">
+                Upon review and publication, a unique <strong>Digital Evidence ID</strong> (e.g., DRRES-2025-001) will be generated for this record to ensure quality tracking and citation.
+              </p>
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
               {/* Preview Card */}

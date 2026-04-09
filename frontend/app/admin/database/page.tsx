@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { 
   Search, Upload, Download, ChevronLeft, ChevronRight, X,
   CheckCircle2, Clock, FileText, XCircle, Eye, MoreHorizontal,
-  Check, RotateCcw, Send, AlertCircle
+  Check, RotateCcw, Send, AlertCircle, Star
 } from "lucide-react";
 
 type EvidenceRecord = {
@@ -22,10 +22,11 @@ type EvidenceRecord = {
   country: string;
   priorityArea: string;
   doi: string;
+  isFeatured?: boolean;
 };
 
 const MOCK_RECORDS: EvidenceRecord[] = [
-  { id: "DRS-2025-001", title: "Facilitators of and Barriers to Uptake of Home-Based HIV Testing", submitter: "Dr. Amara Osei", submitterEmail: "a.osei@mak.ac.ug", type: "Primary Study", sdg: "SDG 3", status: "Published", date: "2025-03-28", abstract: "Background: Integrating home-based HIV counseling and testing (HCT) with tuberculosis (TB) evaluation could improve the uptake of HIV testing among household contacts of patients with active TB.", authors: "Osei A., Kimani J., Nakamura T.", year: "2025", country: "Uganda", priorityArea: "Communicable Diseases", doi: "10.1097/QAI.0000000000001617" },
+  { id: "DRS-2025-001", title: "Facilitators of and Barriers to Uptake of Home-Based HIV Testing", submitter: "Dr. Amara Osei", submitterEmail: "a.osei@mak.ac.ug", type: "Primary Study", sdg: "SDG 3", status: "Published", date: "2025-03-28", abstract: "Background: Integrating home-based HIV counseling and testing (HCT) with tuberculosis (TB) evaluation could improve the uptake of HIV testing among household contacts of patients with active TB.", authors: "Osei A., Kimani J., Nakamura T.", year: "2025", country: "Uganda", priorityArea: "Communicable Diseases", doi: "10.1097/QAI.0000000000001617", isFeatured: true },
   { id: "DRS-2025-002", title: "Climate-Resilient Agriculture Policies for Sub-Saharan Drylands", submitter: "Dr. Amara Osei", submitterEmail: "a.osei@mak.ac.ug", type: "Systematic Review", sdg: "SDG 13", status: "Published", date: "2025-03-15", abstract: "A comprehensive review of 144 pilot programs testing drought-resistant crop subsidies and soil moisture retention techniques across Sub-Saharan Africa.", authors: "Institute for Climate Impact", year: "2024", country: "Sub-Saharan Africa", priorityArea: "Food Security", doi: "10.1016/j.gfs.2024.100815" },
   { id: "DRS-2025-003", title: "AI in Primary Education: Infrastructure Requirements for Rural Deployment", submitter: "J. Kimani", submitterEmail: "j.kimani@uon.ac.ke", type: "Policy Brief", sdg: "SDG 4", status: "Published", date: "2025-02-22", abstract: "An analysis of the digital infrastructure gaps in rural East African schools and policy recommendations for bridging the EdTech divide.", authors: "African Tech Policy Network", year: "2024", country: "Kenya", priorityArea: "Digital Infrastructure", doi: "10.1080/02680513.2024.2312788" },
   { id: "DRS-2025-004", title: "Maternal Health Outcomes in Urban vs. Rural Settings Across East Africa", submitter: "Dr. Amara Osei", submitterEmail: "a.osei@mak.ac.ug", type: "Primary Study", sdg: "SDG 3", status: "Published", date: "2025-02-10", abstract: "A multi-site study comparing maternal health outcomes across urban and rural settings in Uganda, Kenya, and Tanzania.", authors: "Osei A., Banda M., Wanjiku R.", year: "2025", country: "East Africa", priorityArea: "Accessible Healthcare", doi: "10.1016/j.healthpol.2025.03.001" },
@@ -37,7 +38,6 @@ const MOCK_RECORDS: EvidenceRecord[] = [
   { id: "DRS-2025-010", title: "Antimicrobial Resistance Surveillance Networks: A Gap Analysis for Eastern Africa", submitter: "Dr. Amara Osei", submitterEmail: "a.osei@mak.ac.ug", type: "Primary Study", sdg: "SDG 3", status: "Needs Review", date: "2025-04-02", abstract: "A comprehensive gap analysis of antimicrobial resistance surveillance networks across Eastern African nations, identifying critical infrastructure and capacity needs.", authors: "Osei A., Ngure K., Ssempijja V.", year: "2025", country: "Eastern Africa", priorityArea: "Communicable Diseases", doi: "10.1016/j.ijantimicag.2025.107123" },
   { id: "DRS-2025-011", title: "Soil Carbon Sequestration Potential Under Agroforestry Systems in the Sahel", submitter: "T. Nakamura", submitterEmail: "t.nakamura@jica.go.jp", type: "Policy Brief", sdg: "SDG 13", status: "Needs Review", date: "2025-04-06", abstract: "Policy brief evaluating the carbon sequestration potential of different agroforestry systems in Sahelian landscapes.", authors: "Nakamura T., Traoré A., Diallo F.", year: "2025", country: "Sahel Region", priorityArea: "Food Security", doi: "" },
   { id: "DRS-2025-012", title: "Mobile Health Interventions for Chronic Disease Management: Uganda Pilot Results", submitter: "M. Banda", submitterEmail: "m.banda@makerere.ac.ug", type: "Primary Study", sdg: "SDG 3", status: "Draft", date: "2025-04-07", abstract: "Pilot study results from a mobile health intervention program for chronic disease management in urban Kampala.", authors: "Banda M., Osei A.", year: "2025", country: "Uganda", priorityArea: "Accessible Healthcare", doi: "" },
-  { id: "DRS-2025-013", title: "Evidence Gaps in Climate Adaptation Finance for Least Developed Countries", submitter: "P. Odhiambo", submitterEmail: "p.odhiambo@cgiar.org", type: "Systematic Review", sdg: "SDG 13", status: "Rejected", date: "2025-03-20", abstract: "A systematic review identifying evidence gaps in climate adaptation finance mechanisms targeting least developed countries.", authors: "Odhiambo P., Schmidt H.", year: "2025", country: "Global", priorityArea: "Renewable Energy", doi: "" },
 ];
 
 const STATUS_CONFIG: Record<string, { color: string; bg: string; border: string; icon: React.ReactNode }> = {
@@ -48,6 +48,7 @@ const STATUS_CONFIG: Record<string, { color: string; bg: string; border: string;
 };
 
 export default function AdminDatabasePage() {
+  const [localRecords, setLocalRecords] = useState(MOCK_RECORDS);
   const [statusFilter, setStatusFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,10 +58,10 @@ export default function AdminDatabasePage() {
   const [showRejectField, setShowRejectField] = useState(false);
   const itemsPerPage = 8;
 
-  const needsReviewCount = MOCK_RECORDS.filter(r => r.status === "Needs Review").length;
+  const needsReviewCount = localRecords.filter(r => r.status === "Needs Review").length;
 
   const filtered = useMemo(() => {
-    return MOCK_RECORDS.filter(r => {
+    return localRecords.filter(r => {
       const matchesStatus = statusFilter === "All" || r.status === statusFilter;
       const matchesSearch = searchQuery === "" || 
         r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -68,7 +69,7 @@ export default function AdminDatabasePage() {
         r.submitter.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesStatus && matchesSearch;
     });
-  }, [statusFilter, searchQuery]);
+  }, [statusFilter, searchQuery, localRecords]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
   const paginated = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -78,6 +79,12 @@ export default function AdminDatabasePage() {
     setReviewNotes("");
     setRejectReason("");
     setShowRejectField(false);
+  };
+
+  const toggleFeature = (id: string) => {
+    setLocalRecords(prev => prev.map(r => 
+      r.id === id ? { ...r, isFeatured: !r.isFeatured } : r
+    ));
   };
 
   return (
@@ -201,6 +208,12 @@ export default function AdminDatabasePage() {
                             Review
                           </button>
                         )}
+                        <button 
+                          onClick={() => toggleFeature(record.id)}
+                          className={`p-1.5 rounded-md transition-colors cursor-pointer ${record.isFeatured ? "text-primary hover:bg-primary/10" : "text-muted-foreground hover:bg-muted/40"}`}
+                        >
+                          <Star className={`w-4 h-4 ${record.isFeatured ? "fill-primary" : ""}`} />
+                        </button>
                         <button className="p-1.5 rounded-md hover:bg-muted/40 transition-colors text-muted-foreground cursor-pointer">
                           <MoreHorizontal className="w-4 h-4" />
                         </button>
@@ -334,8 +347,8 @@ export default function AdminDatabasePage() {
                     { label: "Title is descriptive and accurate", done: true },
                     { label: "Authors properly listed", done: true },
                     { label: "SDG classification is correct", done: true },
-                    { label: "Abstract is substantive (>100 words)", done: reviewingRecord.abstract.split(' ').length > 15 },
-                    { label: "DOI provided", done: !!reviewingRecord.doi },
+                    { label: "Abstract is substantive (>100 words)", done: reviewingRecord?.abstract ? reviewingRecord.abstract.split(' ').length > 15 : false },
+                    { label: "DOI provided", done: !!reviewingRecord?.doi },
                     { label: "No duplicate record in database", done: true },
                   ].map(check => (
                     <div key={check.label} className="flex items-center gap-2.5">

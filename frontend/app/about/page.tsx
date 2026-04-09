@@ -23,16 +23,19 @@ export default function AboutPage() {
             <div className="flex flex-col items-start">
               <div className="relative mb-4 pl-4 border-l-2 border-primary/40">
                 <span className="font-mono text-[10px] tracking-[2px] uppercase font-bold text-primary block">
-                  About ACRES
+                  The Platform
                 </span>
               </div>
               
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-[3.2rem] font-bold tracking-tight text-foreground mb-3 leading-[1.1]">
-                Bridging <span className="text-primary italic font-medium">evidence</span> and policy.
+                Digital Evidence Hub <br />
+                <span className="text-primary italic font-medium">Dr-RES.</span>
               </h1>
               
               <p className="text-sm md:text-[14px] text-muted-foreground leading-relaxed max-w-lg mb-5">
-                The Center for Rapid Evidence Synthesis (ACRES) is a knowledge brokering NGO based in Kampala, Uganda. Building on work begun in 2010 at the College of Health Sciences at Makerere University, we partner with leaders across public health, education, macroeconomics, climate change, and renewable energy — powered by cutting-edge AI and digital tools.
+                The Digital Rapid Evidence Synthesis (Dr-RES) Hub is Africa's premier platform for evidence-informed decision making. It provides policymakers with immediate access to grounded, locally-relevant research synthesized for urgent policy needs. 
+                <br /><br />
+                Hosted by <strong>ACRES</strong>, the hub bridges the gap between global knowledge and national policy action through rigorous synthesis and digital innovation.
               </p>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -40,16 +43,14 @@ export default function AboutPage() {
                   href="/search"
                   className="px-5 py-2.5 bg-foreground text-background rounded-xl font-medium hover:bg-foreground/90 transition-all text-sm"
                 >
-                  Explore Evidence
+                  Enter Library
                 </Link>
-                <a 
-                  href="https://acres.or.ug" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                <Link 
+                  href="/dashboard/submit"
                   className="px-5 py-2.5 border-[1.5px] border-border text-foreground rounded-xl font-medium hover:border-foreground/30 transition-all text-sm"
                 >
-                  Visit acres.or.ug
-                </a>
+                  Contribute Evidence
+                </Link>
               </div>
             </div>
             
