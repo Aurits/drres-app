@@ -476,8 +476,8 @@ function SearchContent() {
                     <span className="font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium bg-foreground text-background">
                       {item.type}
                     </span>
-                    <span className={`font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium border ${item.sdg.includes('SDG 3') ? 'bg-forest/10 text-forest border-forest/20' : item.sdg.includes('SDG 13') ? 'bg-sky/10 text-sky border-sky/20' : 'bg-amber/10 text-amber border-amber/20'}`}>
-                      {item.sdg}
+                    <span className={`font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-bold border ${item.sdg.includes('SDG 3') ? 'bg-forest/10 text-forest border-forest/20' : item.sdg.includes('SDG 13') ? 'bg-sky/10 text-sky border-sky/20' : 'bg-amber/10 text-amber border-amber/20'}`}>
+                      {item.sdg.split(':')[0]}
                     </span>
                     <span className="font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium bg-muted/50 text-foreground border border-border">
                       {item.priorityArea}

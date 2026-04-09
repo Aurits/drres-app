@@ -285,8 +285,13 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                             </div>
                             <span className="font-mono text-[9px] text-forest opacity-70">Panel ACRES-B3</span>
                           </div>
-                          <div className="text-[11px] text-muted-foreground font-mono pl-1">
-                            Added to Hub Library · {evidence?.year || '2025'}
+                          <div className="flex flex-col gap-0.5 pl-1">
+                            <div className="text-[11px] font-bold text-foreground font-mono uppercase tracking-wider">
+                              {evidence?.uniqueId || 'DRRES-PENDING'}
+                            </div>
+                            <div className="text-[9px] text-muted-foreground font-mono">
+                              Hub Library Entry · {evidence?.year || '2025'}
+                            </div>
                           </div>
                         </div>
                       </div>

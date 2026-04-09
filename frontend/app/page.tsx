@@ -15,18 +15,20 @@ export default function Home() {
   const featuredEvidence = [
     {
       id: "DRRES-2025-001",
+      uniqueId: "DRRES-2025-001",
       title: "Impact of Climate-Resilient Subsidies on Smallholder Farmers in Uganda",
       abstract: "A comprehensive analysis of fiscal support mechanisms designed to mitigate drought impact among subsistence farmers in the cattle corridor...",
       type: "Policy Brief",
-      sdg: "SDG 13",
+      sdg: "SDG 13: Climate Action",
       date: "March 2025"
     },
     {
       id: "DRRES-2025-004",
+      uniqueId: "DRRES-2025-004",
       title: "Tele-medicine Infrastructure Gaps in Rural Eastern Africa: A Synthesis",
       abstract: "Identifying the critical digital infrastructure barriers preventing the adoption of hybrid healthcare delivery models across off-grid communities...",
       type: "Rapid Response",
-      sdg: "SDG 3",
+      sdg: "SDG 3: Good Health",
       date: "Feb 2025"
     }
   ];
@@ -166,16 +168,16 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {featuredEvidence.map((item, idx) => (
-              <div key={item.id} className="group relative bg-background border border-border rounded-2xl p-8 hover:border-primary/40 transition-all shadow-sm hover:shadow-xl hover:-translate-y-1 duration-300 overflow-hidden">
+              <div key={item.id} className="group relative bg-background border border-border rounded-xl p-8 hover:border-primary/40 transition-all shadow-sm hover:shadow-xl hover:-translate-y-1 duration-300 overflow-hidden">
                 <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                   <span className="font-serif italic text-6xl lg:text-8xl">{item.id.split('-').pop()}</span>
                 </div>
                 
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="font-mono text-[9px] px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded uppercase font-bold tracking-wider">
+                <div className="flex items-center gap-2.5 mb-6">
+                  <span className="font-mono text-[9px] px-2.5 py-1 bg-foreground text-background rounded uppercase font-bold tracking-wider">
                     {item.type}
                   </span>
-                  <span className="font-mono text-[9px] px-2 py-0.5 bg-foreground/5 text-muted-foreground border border-border rounded uppercase font-bold tracking-wider">
+                  <span className={`font-mono text-[9px] px-2.5 py-1 rounded uppercase font-bold tracking-wider border ${item.sdg.includes('SDG 3') ? 'bg-forest/10 text-forest border-forest/20' : item.sdg.includes('SDG 13') ? 'bg-sky/10 text-sky border-sky/20' : 'bg-amber/10 text-amber border-amber/20'}`}>
                     {item.sdg}
                   </span>
                 </div>
@@ -189,9 +191,9 @@ export default function Home() {
                 </p>
 
                 <div className="flex items-center justify-between pt-6 border-t border-border/60">
-                  <div className="flex items-center gap-4 text-[11px] text-muted-foreground font-mono">
-                    <span className="flex items-center gap-1.5 uppercase font-bold tracking-widest">
-                      ID: {item.id}
+                  <div className="flex items-center gap-4 text-[10px] text-muted-foreground font-mono">
+                    <span className="flex items-center gap-1.5 uppercase font-bold tracking-[0.5px]">
+                      ID: {item.uniqueId}
                     </span>
                     <span className="flex items-center gap-1.5">
                       <Clock className="w-3 h-3" />
