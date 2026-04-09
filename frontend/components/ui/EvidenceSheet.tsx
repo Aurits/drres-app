@@ -116,8 +116,16 @@ export function EvidenceSheet({ open, onOpenChange, evidence }: EvidenceSheetPro
                       )}
 
                       <div className="flex flex-wrap gap-2 mb-6">
-                        <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-[1.5px] uppercase px-2.5 py-1.5 border rounded-[4px] bg-forest/10 border-forest/20 text-forest hover:opacity-80 transition-opacity cursor-pointer">
-                          <span className="w-1.5 h-1.5 rounded-full bg-forest shrink-0" />
+                        <span className={`flex items-center gap-1.5 font-mono text-[10px] font-bold tracking-[1.5px] uppercase px-2.5 py-1.5 border rounded-[4px] transition-opacity cursor-pointer ${
+                          evidence?.sdg.includes("3") ? "bg-forest/10 border-forest/20 text-forest" 
+                          : evidence?.sdg.includes("13") ? "bg-sky/10 border-sky/20 text-sky"
+                          : "bg-amber/10 border-amber/20 text-amber"
+                        }`}>
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                             evidence?.sdg.includes("3") ? "bg-forest" 
+                             : evidence?.sdg.includes("13") ? "bg-sky"
+                             : "bg-amber"
+                          }`} />
                           {evidence?.sdg || 'SDG Target'}
                         </span>
                         <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-[1.5px] uppercase px-2.5 py-1.5 border rounded-[4px] bg-sky/10 border-sky/20 text-sky hover:opacity-80 transition-opacity cursor-pointer">

@@ -30,9 +30,9 @@ const SYSTEM_SERVICES = [
 ];
 
 const ADMIN_LOG = [
-  { action: "Published evidence", detail: "DRS-2025-012 \"Antimicrobial Resistance Surveillance...\" approved by Admin.", time: "2h ago", type: "success" },
+  { action: "Published evidence", detail: "DRRES-2025-012 \"Antimicrobial Resistance Surveillance...\" approved by Admin.", time: "2h ago", type: "success" },
   { action: "Bulk import completed", detail: "24 records imported from ACRES_Q1_2025.xlsx — 22 valid, 2 errors.", time: "5h ago", type: "info" },
-  { action: "Submission rejected", detail: "DRS-2025-015 \"Evidence Gaps in Climate...\" — Incomplete methodology.", time: "1d ago", type: "error" },
+  { action: "Submission rejected", detail: "DRRES-2025-015 \"Evidence Gaps in Climate...\" — Incomplete methodology.", time: "1d ago", type: "error" },
   { action: "User role changed", detail: "j.kimani@uon.ac.ke promoted from Viewer to Contributor.", time: "1d ago", type: "info" },
   { action: "System re-indexed", detail: "Full vector re-index completed. 4,091 records processed in 14m 32s.", time: "2d ago", type: "success" },
   { action: "Category updated", detail: "Added new Priority Area \"Climate Finance\" under SDG 13.", time: "3d ago", type: "info" },

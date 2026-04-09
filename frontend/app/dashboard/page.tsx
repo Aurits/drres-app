@@ -9,21 +9,21 @@ import {
 
 // Mock submissions data
 const MOCK_SUBMISSIONS = [
-  { id: "DRS-2025-001", title: "Facilitators of and Barriers to Uptake of Home-Based HIV Testing", type: "Primary Study", sdg: "SDG 3", status: "Published", date: "2025-03-28", views: 342 },
-  { id: "DRS-2025-002", title: "Climate-Resilient Agriculture Policies for Sub-Saharan Drylands", type: "Systematic Review", sdg: "SDG 13", status: "Published", date: "2025-03-15", views: 218 },
-  { id: "DRS-2025-003", title: "AI in Primary Education: Infrastructure Requirements for Rural Deployment", type: "Policy Brief", sdg: "SDG 4", status: "Published", date: "2025-02-22", views: 156 },
-  { id: "DRS-2025-004", title: "Maternal Health Outcomes in Urban vs. Rural Settings Across East Africa", type: "Primary Study", sdg: "SDG 3", status: "Published", date: "2025-02-10", views: 289 },
-  { id: "DRS-2025-005", title: "Water Sanitation Infrastructure and Cholera Prevention in Kampala Districts", type: "Rapid Response", sdg: "SDG 3", status: "Published", date: "2025-01-18", views: 412 },
-  { id: "DRS-2025-006", title: "Renewable Solar Micro-Grid Deployment: Policy Frameworks for County-Level Implementation", type: "Policy Brief", sdg: "SDG 13", status: "Published", date: "2024-12-30", views: 97 },
-  { id: "DRS-2025-007", title: "Digital Literacy Training Outcomes Among Primary School Teachers in Western Kenya", type: "Primary Study", sdg: "SDG 4", status: "Published", date: "2024-12-15", views: 134 },
-  { id: "DRS-2025-008", title: "Community Health Worker Retention Strategies: A Multi-Country Analysis", type: "Systematic Review", sdg: "SDG 3", status: "Published", date: "2024-11-28", views: 267 },
-  { id: "DRS-2025-009", title: "Impact of Drought-Resistant Crop Subsidies on Smallholder Farmer Incomes", type: "Primary Study", sdg: "SDG 13", status: "Published", date: "2024-11-10", views: 188 },
-  { id: "DRS-2025-010", title: "Vaccine Cold Chain Logistics in Sub-Saharan Africa: A Rapid Review", type: "Rapid Response", sdg: "SDG 3", status: "Published", date: "2024-10-22", views: 356 },
-  { id: "DRS-2025-011", title: "Gender-Responsive Budgeting in Education Sectors Across 12 African Nations", type: "Systematic Review", sdg: "SDG 4", status: "Published", date: "2024-09-05", views: 142 },
-  { id: "DRS-2025-012", title: "Antimicrobial Resistance Surveillance Networks: A Gap Analysis for Eastern Africa", type: "Primary Study", sdg: "SDG 3", status: "Pending", date: "2025-04-02", views: 0 },
-  { id: "DRS-2025-013", title: "Soil Carbon Sequestration Potential Under Agroforestry Systems in the Sahel", type: "Policy Brief", sdg: "SDG 13", status: "Pending", date: "2025-04-05", views: 0 },
-  { id: "DRS-2025-014", title: "Mobile Health Interventions for Chronic Disease Management: Uganda Pilot Results", type: "Primary Study", sdg: "SDG 3", status: "Draft", date: "2025-04-07", views: 0 },
-  { id: "DRS-2025-015", title: "Evidence Gaps in Climate Adaptation Finance for Least Developed Countries", type: "Systematic Review", sdg: "SDG 13", status: "Rejected", date: "2025-03-20", views: 0 },
+  { id: "DRRES-2025-001", title: "Facilitators of and Barriers to Uptake of Home-Based HIV Testing", type: "Primary Study", sdg: "SDG 3: Good Health", status: "Published", date: "2025-03-28", views: 342 },
+  { id: "DRRES-2025-002", title: "Climate-Resilient Agriculture Policies for Sub-Saharan Drylands", type: "Systematic Review", sdg: "SDG 13: Climate Action", status: "Published", date: "2025-03-15", views: 218 },
+  { id: "DRRES-2025-003", title: "AI in Primary Education: Infrastructure Requirements for Rural Deployment", type: "Policy Brief", sdg: "SDG 4: Quality Education", status: "Published", date: "2025-02-22", views: 156 },
+  { id: "DRRES-2025-004", title: "Maternal Health Outcomes in Urban vs. Rural Settings Across East Africa", type: "Primary Study", sdg: "SDG 3: Good Health", status: "Published", date: "2025-02-10", views: 289 },
+  { id: "DRRES-2025-005", title: "Water Sanitation Infrastructure and Cholera Prevention in Kampala Districts", type: "Rapid Response", sdg: "SDG 3: Good Health", status: "Published", date: "2025-01-18", views: 412 },
+  { id: "DRRES-2025-006", title: "Renewable Solar Micro-Grid Deployment: Policy Frameworks for County-Level Implementation", type: "Policy Brief", sdg: "SDG 13: Climate Action", status: "Published", date: "2024-12-30", views: 97 },
+  { id: "DRRES-2025-007", title: "Digital Literacy Training Outcomes Among Primary School Teachers in Western Kenya", type: "Primary Study", sdg: "SDG 4: Quality Education", status: "Published", date: "2024-12-15", views: 134 },
+  { id: "DRRES-2025-008", title: "Community Health Worker Retention Strategies: A Multi-Country Analysis", type: "Systematic Review", sdg: "SDG 3: Good Health", status: "Published", date: "2024-11-28", views: 267 },
+  { id: "DRRES-2025-009", title: "Impact of Drought-Resistant Crop Subsidies on Smallholder Farmer Incomes", type: "Primary Study", sdg: "SDG 13: Climate Action", status: "Published", date: "2024-11-10", views: 188 },
+  { id: "DRRES-2025-010", title: "Vaccine Cold Chain Logistics in Sub-Saharan Africa: A Rapid Review", type: "Rapid Response", sdg: "SDG 3: Good Health", status: "Published", date: "2024-10-22", views: 356 },
+  { id: "DRRES-2025-011", title: "Gender-Responsive Budgeting in Education Sectors Across 12 African Nations", type: "Systematic Review", sdg: "SDG 4: Quality Education", status: "Published", date: "2024-09-05", views: 142 },
+  { id: "DRRES-2025-012", title: "Antimicrobial Resistance Surveillance Networks: A Gap Analysis for Eastern Africa", type: "Primary Study", sdg: "SDG 3: Good Health", status: "Pending", date: "2025-04-02", views: 0 },
+  { id: "DRRES-2025-013", title: "Soil Carbon Sequestration Potential Under Agroforestry Systems in the Sahel", type: "Policy Brief", sdg: "SDG 13: Climate Action", status: "Pending", date: "2025-04-05", views: 0 },
+  { id: "DRRES-2025-014", title: "Mobile Health Interventions for Chronic Disease Management: Uganda Pilot Results", type: "Primary Study", sdg: "SDG 3: Good Health", status: "Draft", date: "2025-04-07", views: 0 },
+  { id: "DRRES-2025-015", title: "Evidence Gaps in Climate Adaptation Finance for Least Developed Countries", type: "Systematic Review", sdg: "SDG 13: Climate Action", status: "Rejected", date: "2025-03-20", views: 0 },
 ];
 
 const STATUS_CONFIG: Record<string, { color: string; bg: string; border: string; icon: React.ReactNode }> = {
@@ -179,12 +179,12 @@ export default function DashboardPage() {
                       <span className="font-mono text-[10px] tracking-[1px] text-muted-foreground uppercase">{sub.type}</span>
                     </td>
                     <td className="px-4 py-4 hidden lg:table-cell">
-                      <span className={`font-mono text-[10px] tracking-[1px] uppercase px-2 py-0.5 rounded-[4px] border font-medium ${
-                        sub.sdg.includes("3") ? "bg-forest/10 text-forest border-forest/20" 
-                        : sub.sdg.includes("13") ? "bg-sky/10 text-sky border-sky/20" 
-                        : "bg-primary/10 text-primary border-primary/20"
+                      <span className={`font-mono text-[10px] tracking-[1px] uppercase px-2 py-0.5 rounded-[4px] border font-bold ${
+                        sub.sdg.includes("SDG 3") ? "bg-forest/10 text-forest border-forest/20" 
+                        : sub.sdg.includes("SDG 13") ? "bg-sky/10 text-sky border-sky/20" 
+                        : "bg-amber/10 text-amber border-amber/20"
                       }`}>
-                        {sub.sdg}
+                        {sub.sdg.split(':')[0]}
                       </span>
                     </td>
                     <td className="px-4 py-4">
