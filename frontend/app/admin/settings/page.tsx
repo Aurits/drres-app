@@ -72,7 +72,7 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="max-w-[1100px] mx-auto w-full px-6 lg:px-10 py-8 lg:py-10">
+    <div className="max-w-[1400px] mx-auto w-full px-6 lg:px-10 py-8 lg:py-10">
       
       {/* Header */}
       <div className="mb-6">
