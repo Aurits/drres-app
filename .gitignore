@@ -1,6 +1,6 @@
 # ══════════════════════════════════════════════
 # Dr-RES — Root .gitignore
-# Covers frontend (Next.js) + backend (Node.js)
+# Covers frontend (Next.js) + backend (FastAPI)
 # ══════════════════════════════════════════════
 
 # ─── Dependencies ─────────────────────────────
@@ -8,6 +8,8 @@ node_modules/
 .pnp/
 .pnp.js
 .yarn/
+myenv/
+venv/
 
 # ─── Build Output ─────────────────────────────
 .next/
@@ -28,7 +30,6 @@ build/
 *.sqlite
 *.sqlite3
 *.db
-prisma/migrations/*.sql.bak
 
 # ─── IDE & Editor ─────────────────────────────
 .vscode/settings.json

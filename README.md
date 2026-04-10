@@ -53,7 +53,7 @@ drres/
 │
 ├── backend/           # API services (planned)
 │   ├── api/           # REST/tRPC endpoints
-│   ├── prisma/        # Database schema & migrations
+│   ├── models/        # Database schema & migrations
 │   ├── services/      # AI, search, email, storage
 │   └── workers/       # Background indexing jobs
 │
