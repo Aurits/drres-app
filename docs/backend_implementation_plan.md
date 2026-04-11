@@ -7,6 +7,103 @@
 
 ---
 
+## User Story Flow — How the Phases Connect
+
+This is the end-to-end journey a user takes through the system, and the phase that powers each step.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  VISITOR (unauthenticated)                                                  │
+│                                                                             │
+│  1. Opens the platform and searches "food security interventions Uganda"    │
+│     └── Phase 2: FTS over evidence.search_vector → ranked list returned    │
+│                                                                             │
+│  2. Filters by SDG 2, type = Systematic Review, year = 2020–2024           │
+│     └── Phase 2: Faceted WHERE clauses + /facets endpoint                  │
+│                                                                             │
+│  3. Clicks a result → reads abstract, authors, DOI                         │
+│     └── Phase 2: GET /evidence/{id}                                        │
+│                                                                             │
+│  4. Asks the AI: "Summarise the key findings of this paper"                │
+│     └── Phase 4: /evidence/{id}/summary → LLM over top chunks              │
+│                                                                             │
+│  5. Opens the Ask AI drawer and types a follow-up policy question           │
+│     └── Phase 5: RAG pipeline → cosine retrieval → LLM → cited answer      │
+│        (conversation history preserved across turns)                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+         │
+         │  wants to contribute
+         ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  RESEARCHER (authenticated)                                                 │
+│                                                                             │
+│  6. Registers and verifies email                                            │
+│     └── Phase 6: POST /auth/register → JWT issued                          │
+│                                                                             │
+│  7. Submits a new evidence document (fills form, uploads PDF)              │
+│     └── Phase 3: POST /submissions → presigned S3 URL returned             │
+│        Browser uploads PDF directly to S3 using presigned URL              │
+│                                                                             │
+│  8. Tracks their submission status (pending → approved / rejected)         │
+│     └── Phase 3: GET /submissions/{id} (own records only)                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+         │
+         │  submission approved
+         ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  SYSTEM (background workers)                                                │
+│                                                                             │
+│  9. PDF downloaded from S3, extracted, chunked into ~500-token segments    │
+│     └── Phase 3: workers/ingest.py → bulk insert to evidence_chunks        │
+│                                                                             │
+│ 10. Each chunk embedded via OpenAI text-embedding-3-small                  │
+│     └── Phase 4: workers/embed.py → embedding column populated             │
+│        (now the document is searchable by meaning, not just keywords)      │
+└─────────────────────────────────────────────────────────────────────────────┘
+         │
+         │  admin reviews platform
+         ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  ADMIN                                                                      │
+│                                                                             │
+│ 11. Reviews submission queue; approves or requests revisions               │
+│     └── Phase 3: PATCH /submissions/{id}/status                            │
+│                                                                             │
+│ 12. Views submission counts, search volumes, active users                  │
+│     └── Phase 7: GET /admin/stats                                          │
+│                                                                             │
+│ 13. Updates the SDG / priority area taxonomy                               │
+│     └── Phase 7: PATCH /admin/taxonomy                                     │
+│                                                                             │
+│ 14. Reviews audit log of all admin actions                                 │
+│     └── Phase 7: GET /admin/audit-log                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Phase Dependency Chain (Data Flow Perspective)
+
+```
+Phase 2 (evidence rows exist)
+  │  enables keyword search for visitors
+  │
+  ├── Phase 3 (PDF submission + chunking)
+  │     │  writes evidence_chunks rows
+  │     │
+  │     └── Phase 4 (embeddings + summaries)
+  │           │  populates embedding column on chunks
+  │           │
+  │           └── Phase 5 (RAG chat)
+  │                 reads chunks by cosine similarity
+  │
+Phase 6 (auth — gates all write paths)
+  │  researcher can submit (Phase 3)
+  │  admin can moderate (Phase 3 + Phase 7)
+  │
+Phase 7 (admin analytics — reads from all prior phases)
+```
+
+---
+
 ## Legend
 ```
 [x]  Complete & operational
