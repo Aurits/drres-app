@@ -12,7 +12,7 @@ env:
   IMAGE_NAME_BACKEND: ${{ github.repository }}-backend
 
 jobs:
-  build-and-push-images:
+  build-frontend:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -46,6 +46,23 @@ jobs:
           tags: ${{ steps.meta-frontend.outputs.tags }}
           labels: ${{ steps.meta-frontend.outputs.labels }}
 
+  build-backend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.CR_PAT }}
+
       - name: Extract metadata for backend
         id: meta-backend
         uses: docker/metadata-action@v5
@@ -65,8 +82,20 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build-and-push-images
+    needs: [build-frontend, build-backend]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose and nginx config to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.ssh_host }}
+          username: ${{ secrets.ssh_user }}
+          key: ${{ secrets.ssh_key }}
+          source: "docker-compose.yml,nginx/"
+          target: "/drres"
+
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -74,8 +103,8 @@ jobs:
           username: ${{ secrets.ssh_user }}
           key: ${{ secrets.ssh_key }}
           script: |
-            # Pull latest code and restart services
-            cd /drres # Replace with actual path on target server
+            # Navigate to the target directory
+            cd /drres
             
             # Login to registry on target server
             echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
