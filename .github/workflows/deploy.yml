@@ -87,6 +87,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Ensure /drres directory exists on Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ssh_host }}
+          username: ${{ secrets.ssh_user }}
+          key: ${{ secrets.ssh_key }}
+          script: mkdir -p /drres
+
       - name: Copy docker-compose and nginx config to Server
         uses: appleboy/scp-action@master
         with:
