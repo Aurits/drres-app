@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="DrRES API")
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
