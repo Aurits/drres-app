@@ -93,7 +93,7 @@ jobs:
           host: ${{ secrets.ssh_host }}
           username: ${{ secrets.ssh_user }}
           key: ${{ secrets.ssh_key }}
-          script: mkdir -p /drres
+          script: mkdir -p ~/drres
 
       - name: Copy docker-compose and nginx config to Server
         uses: appleboy/scp-action@master
@@ -102,7 +102,7 @@ jobs:
           username: ${{ secrets.ssh_user }}
           key: ${{ secrets.ssh_key }}
           source: "docker-compose.yml,nginx/"
-          target: "/drres"
+          target: "~/drres"
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.3
@@ -112,7 +112,7 @@ jobs:
           key: ${{ secrets.ssh_key }}
           script: |
             # Navigate to the target directory
-            cd /drres
+            cd ~/drres
             
             # Login to registry on target server
             echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
