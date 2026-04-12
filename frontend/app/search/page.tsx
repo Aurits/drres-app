@@ -422,8 +422,8 @@ function SearchContent() {
       </aside>
 
       {/* Main Content Area - Scrollable */}
-      <div className="flex-1 min-w-0 bg-background h-full overflow-y-auto">
-        <div className={`mx-auto w-full min-h-full flex flex-col ${viewMode === 'map' ? 'max-w-none' : 'max-w-[1050px] px-10 lg:px-14 py-8 lg:py-10 pb-24'}`}>
+      <div className="flex-1 min-w-0 bg-background h-full overflow-hidden flex flex-col">
+        <div className={`mx-auto w-full flex flex-col flex-1 ${viewMode === 'map' ? 'max-w-none' : 'max-w-[1050px] px-10 lg:px-14 py-8 lg:py-10 pb-24 overflow-y-auto'}`}>
           
           {/* Main Top Header */}
           <div className={`shrink-0 ${viewMode === 'map' ? 'px-8 py-6 bg-card border-b border-border/40' : 'mb-6'}`}>
