@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { Suspense, useState, useEffect, useMemo, useCallback } from "react";
 import { EvidenceSheet } from "@/components/ui/EvidenceSheet";
 import Link from "next/link";
 import { Search, SlidersHorizontal, ArrowUpDown, Clock, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
@@ -132,6 +132,14 @@ const MOCK_EVIDENCE: EvidenceItem[] = Array.from({ length: 60 }).map((_, i) => {
     isFeatured: i === 1 // Mock one item as featured initially
   };
 });
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading search...</div>}>
+      <SearchContent />
+    </Suspense>
+  );
+}
 
 function SearchContent() {
   const searchParams = useSearchParams();
