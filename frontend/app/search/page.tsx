@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Search, SlidersHorizontal, ArrowUpDown, Clock, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense } from "react";
 
 export type EvidenceItem = {
   id: number;
@@ -133,13 +132,6 @@ const MOCK_EVIDENCE: EvidenceItem[] = Array.from({ length: 60 }).map((_, i) => {
   };
 });
 
-export default function SearchPage() {
-  return (
-    <Suspense fallback={<div>Loading search...</div>}>
-      <SearchContent />
-    </Suspense>
-  );
-}
 
 function SearchContent() {
   const searchParams = useSearchParams();
