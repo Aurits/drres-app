@@ -496,7 +496,7 @@ function SearchContent() {
           </div>
             
           {/* Results Container */}
-          <div className="flex flex-col gap-4 content-start flex-1 mb-10 min-h-0">
+          <div className={`flex flex-col content-start flex-1 min-h-0 ${viewMode === 'map' ? '' : 'gap-4 mb-10'}`}>
             <AnimatePresence mode="wait">
               {viewMode === 'list' ? (
                 <motion.div 
@@ -580,7 +580,7 @@ function SearchContent() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.2 }}
-                  className="h-[calc(100vh-140px)] w-full"
+                  className="flex-1 w-full flex flex-col min-h-0"
                 >
                   <EvidenceGapMap 
                     evidence={filteredEvidence} 
