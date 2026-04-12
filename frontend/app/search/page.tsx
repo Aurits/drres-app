@@ -3,9 +3,11 @@
 import { Suspense, useState, useEffect, useMemo, useCallback } from "react";
 import { EvidenceSheet } from "@/components/ui/EvidenceSheet";
 import Link from "next/link";
-import { Search, SlidersHorizontal, ArrowUpDown, Clock, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowUpDown, Clock, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Sun, Moon, LayoutGrid, LayoutList } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSearchParams, useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { EvidenceGapMap } from "@/components/ui/EvidenceGapMap";
 
 export type EvidenceItem = {
   id: number;
@@ -22,6 +24,8 @@ export type EvidenceItem = {
   citation?: string;
   uniqueId: string;
   isFeatured?: boolean;
+  outcomeCategory?: string;
+  outcome?: string;
 }
 
 export type TaxonomyNode = {
@@ -64,6 +68,13 @@ export const TAXONOMY_TREE: Record<string, TaxonomyNode[]> = {
       subAreas: ["Solar Micro-grids", "Policy Frameworks"]
     }
   ]
+};
+
+export const OUTCOME_TAXONOMY: Record<string, string[]> = {
+  "Health & Well-being": ["Maternal Mortality", "Morbidity Rates", "Healthcare Access", "Life Expectancy"],
+  "Environmental Impact": ["Biodiversity Loss", "Soil Quality", "Water Purity", "Carbon Sequestration"],
+  "Social & Gender": ["Literacy levels", "Gender Equality", "Poverty Reduction", "Community Agency"],
+  "Economic Growth": ["GDP Growth", "Household Income", "Market Stability", "Labor Productivity"]
 };
 
 const BASE_MOCK: EvidenceItem[] = [
@@ -128,6 +139,8 @@ const MOCK_EVIDENCE: EvidenceItem[] = Array.from({ length: 60 }).map((_, i) => {
     year: i < 3 ? base.year : years[i % years.length],
     priorityArea: selectedPriorityArea.name,
     subArea: selectedSubArea,
+    outcomeCategory: Object.keys(OUTCOME_TAXONOMY)[i % Object.keys(OUTCOME_TAXONOMY).length],
+    outcome: OUTCOME_TAXONOMY[Object.keys(OUTCOME_TAXONOMY)[i % Object.keys(OUTCOME_TAXONOMY).length]][i % 4],
     isFeatured: i === 1 // Mock one item as featured initially
   };
 });
@@ -144,6 +157,7 @@ function SearchContent() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [paramsInitialized, setParamsInitialized] = useState(false);
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
   
   useEffect(() => { setMounted(true); }, []);
 
@@ -409,10 +423,10 @@ function SearchContent() {
 
       {/* Main Content Area - Scrollable */}
       <div className="flex-1 min-w-0 bg-background h-full overflow-y-auto">
-        <div className="max-w-[1050px] mx-auto w-full px-10 lg:px-14 py-8 lg:py-10 pb-24 min-h-full flex flex-col">
+        <div className={`mx-auto w-full min-h-full flex flex-col ${viewMode === 'map' ? 'max-w-none' : 'max-w-[1050px] px-10 lg:px-14 py-8 lg:py-10 pb-24'}`}>
           
           {/* Main Top Header */}
-          <div className="mb-6 shrink-0">
+          <div className={`shrink-0 ${viewMode === 'map' ? 'px-8 py-6 bg-card border-b border-border/40' : 'mb-6'}`}>
             
             {/* Top Bar: Results count + Sort + Active pills */}
             <div className="flex flex-col gap-4">
@@ -424,18 +438,40 @@ function SearchContent() {
                   <span className="font-mono text-[12px] text-muted-foreground tracking-[1px] bg-muted/30 px-2.5 py-1 rounded-[4px] border border-border">{sortedEvidence.length} records</span>
                 </div>
 
-                {/* Right: Sort Dropdown */}
-                <div className="flex items-center gap-3 shrink-0">
-                  <span className="text-[12px] text-muted-foreground hidden sm:block">Sort by</span>
-                  <select 
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="border-[1.5px] border-border rounded-lg px-4 py-2.5 font-sans text-[13px] bg-card cursor-pointer outline-none text-foreground shadow-sm hover:border-foreground/30 transition-colors"
-                  >
-                    <option value="relevance">Relevance</option>
-                    <option value="year-desc">Most Recent</option>
-                    <option value="title-asc">A → Z</option>
-                  </select>
+                {/* Right: Sort + View Toggle */}
+                <div className="flex items-center gap-4 shrink-0">
+                  {/* View Switcher */}
+                  <div className="flex items-center bg-muted/30 p-1 rounded-lg border border-border">
+                    <button 
+                      onClick={() => setViewMode("list")}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all ${viewMode === 'list' ? 'bg-foreground text-background shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                      <LayoutList className="w-3.5 h-3.5" />
+                      List
+                    </button>
+                    <button 
+                      onClick={() => setViewMode("map")}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all ${viewMode === 'map' ? 'bg-foreground text-background shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                      <LayoutGrid className="w-3.5 h-3.5" />
+                      Gap Map
+                    </button>
+                  </div>
+
+                  <div className="h-4 w-px bg-border mx-1 hidden sm:block"></div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-[12px] text-muted-foreground hidden sm:block">Sort by</span>
+                    <select 
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="border-[1.5px] border-border rounded-lg px-4 py-2.5 font-sans text-[13px] bg-card cursor-pointer outline-none text-foreground shadow-sm hover:border-foreground/30 transition-colors"
+                    >
+                      <option value="relevance">Relevance</option>
+                      <option value="year-desc">Most Recent</option>
+                      <option value="title-asc">A → Z</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -457,78 +493,106 @@ function SearchContent() {
                 </div>
               )}
             </div>
-            
           </div>
-          
-          {/* Results List */}
-          <div className="flex flex-col gap-4 content-start flex-1 mb-10">
-            {paginatedEvidence.length > 0 ? (
-              paginatedEvidence.map((item, idx) => (
-                <div 
-                  key={item.id} 
-                  onClick={() => setSelectedEvidence(item)}
-                  className="bg-card border-[1.5px] border-border rounded-xl p-6 lg:p-7 relative overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_16px_48px_rgba(0,0,0,0.10)] hover:border-primary/30 group"
-                  style={{ animation: `fadeUp 0.4s ease both`, animationDelay: `${idx * 0.03}s` }}
+            
+          {/* Results Container */}
+          <div className="flex flex-col gap-4 content-start flex-1 mb-10 min-h-0">
+            <AnimatePresence mode="wait">
+              {viewMode === 'list' ? (
+                <motion.div 
+                  key="list-view"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex flex-col gap-4"
                 >
-                  <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-border transition-all duration-300 group-hover:bg-primary"></div>
-                  
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    <span className="font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium bg-foreground text-background">
-                      {item.type}
-                    </span>
-                    <span className={`font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-bold border ${item.sdg.includes('SDG 3') ? 'bg-forest/10 text-forest border-forest/20' : item.sdg.includes('SDG 13') ? 'bg-sky/10 text-sky border-sky/20' : 'bg-amber/10 text-amber border-amber/20'}`}>
-                      {item.sdg.split(':')[0]}
-                    </span>
-                    <span className="font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium bg-muted/50 text-foreground border border-border">
-                      {item.priorityArea}
-                    </span>
-                  </div>
-                  
-                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-3">
-                    <h3 className="font-serif text-[18px] md:text-[20px] leading-[1.45] text-foreground font-bold group-hover:text-primary transition-colors">
-                      {item.title}
-                    </h3>
-                    <div className="shrink-0 flex items-center gap-2">
-                      <span className="font-mono text-[10px] text-muted-foreground/60 tracking-wider">ID: {item.uniqueId}</span>
-                    </div>
-                  </div>
-                  
-                  <p className="text-[13px] leading-[1.75] text-muted-foreground mb-4 line-clamp-2">
-                    {item.abstract}
-                  </p>
-                  
-                  <div className="flex items-center justify-between gap-3 pt-3 border-t border-border/60">
-                    <div className="font-mono text-[10px] tracking-[0.5px] text-muted-foreground leading-relaxed flex-1 line-clamp-1">
-                      {item.authors}
-                    </div>
-                    
-                    <div className="flex items-center gap-3 shrink-0">
-                      <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-mono">
-                        <Clock className="w-3 h-3 opacity-40" />
-                        {item.year}
+                  {paginatedEvidence.length > 0 ? (
+                    paginatedEvidence.map((item, idx) => (
+                      <div 
+                        key={item.id} 
+                        onClick={() => setSelectedEvidence(item)}
+                        className="bg-card border-[1.5px] border-border rounded-xl p-6 lg:p-7 relative overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_16px_48px_rgba(0,0,0,0.10)] hover:border-primary/30 group"
+                      >
+                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-border transition-all duration-300 group-hover:bg-primary"></div>
+                        
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          <span className="font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium bg-foreground text-background">
+                            {item.type}
+                          </span>
+                          <span className={`font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-bold border ${item.sdg.includes('SDG 3') ? 'bg-forest/10 text-forest border-forest/20' : item.sdg.includes('SDG 13') ? 'bg-sky/10 text-sky border-sky/20' : 'bg-amber/10 text-amber border-amber/20'}`}>
+                            {item.sdg.split(':')[0]}
+                          </span>
+                          <span className="font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium bg-muted/50 text-foreground border border-border">
+                            {item.priorityArea}
+                          </span>
+                          <span className="font-mono text-[10px] tracking-[1.5px] uppercase px-2.5 py-1 rounded-[4px] font-medium bg-primary/5 text-primary border border-primary/20">
+                            {item.outcome}
+                          </span>
+                        </div>
+                        
+                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-3">
+                          <h3 className="font-serif text-[18px] md:text-[20px] leading-[1.45] text-foreground font-bold group-hover:text-primary transition-colors">
+                            {item.title}
+                          </h3>
+                          <div className="shrink-0 flex items-center gap-2">
+                            <span className="font-mono text-[10px] text-muted-foreground/60 tracking-wider">ID: {item.uniqueId}</span>
+                          </div>
+                        </div>
+                        
+                        <p className="text-[13px] leading-[1.75] text-muted-foreground mb-4 line-clamp-2">
+                          {item.abstract}
+                        </p>
+                        
+                        <div className="flex items-center justify-between gap-3 pt-3 border-t border-border/60">
+                          <div className="font-mono text-[10px] tracking-[0.5px] text-muted-foreground leading-relaxed flex-1 line-clamp-1">
+                            {item.authors}
+                          </div>
+                          
+                          <div className="flex items-center gap-3 shrink-0">
+                            <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-mono">
+                              <Clock className="w-3 h-3 opacity-40" />
+                              {item.year}
+                            </div>
+                            <span className="bg-foreground text-background font-mono text-[9px] tracking-[1.5px] uppercase px-2 py-0.5 rounded-[3px]">
+                              {item.country}
+                            </span>
+                            <button className="opacity-0 group-hover:opacity-100 bg-primary text-foreground border-none rounded-md px-3 py-1.5 font-sans text-[11px] font-semibold transition-all flex items-center gap-1.5 hover:bg-[#e8a855]">
+                              <ExternalLink className="w-3 h-3" />
+                              View
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                      <span className="bg-foreground text-background font-mono text-[9px] tracking-[1.5px] uppercase px-2 py-0.5 rounded-[3px]">
-                        {item.country}
-                      </span>
-                      <button className="opacity-0 group-hover:opacity-100 bg-primary text-foreground border-none rounded-md px-3 py-1.5 font-sans text-[11px] font-semibold transition-all flex items-center gap-1.5 hover:bg-[#e8a855]">
-                        <ExternalLink className="w-3 h-3" />
-                        View
-                      </button>
+                    ))
+                  ) : (
+                    <div className="text-center py-20 bg-muted/20 border border-dashed border-border/60 rounded-2xl w-full">
+                      <Search className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold text-foreground mb-1">No evidence found</h3>
+                      <p className="text-muted-foreground text-sm">Try adjusting your search criteria or filters.</p>
                     </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-20 bg-muted/20 border border-dashed border-border/60 rounded-2xl w-full">
-                <Search className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-1">No evidence found</h3>
-                <p className="text-muted-foreground text-sm">Try adjusting your search criteria or filters.</p>
-              </div>
-            )}
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="map-view"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                  className="h-[calc(100vh-140px)] w-full"
+                >
+                  <EvidenceGapMap 
+                    evidence={filteredEvidence} 
+                    onSelectEvidence={setSelectedEvidence} 
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Pagination Controls */}
-          {totalPages > 1 && (
+          {totalPages > 1 && viewMode === 'list' && (
             <div className="flex flex-col sm:flex-row items-center justify-between pt-6 mt-2 border-t border-border/40 gap-4 shrink-0">
               <span className="text-[12px] text-muted-foreground font-mono tracking-[0.5px]">
                 Showing <span className="font-semibold text-foreground">{(currentPage - 1) * itemsPerPage + 1}</span>–<span className="font-semibold text-foreground">{Math.min(currentPage * itemsPerPage, sortedEvidence.length)}</span> of <span className="font-semibold text-foreground">{sortedEvidence.length}</span>
