@@ -277,7 +277,7 @@ function SearchContent() {
     <div className="flex items-start w-full h-screen bg-background overflow-hidden relative z-10 shell-grid">
       
       {/* Faceted Filter Sidebar - Static Full Height */}
-      <aside className="w-[280px] lg:w-[320px] bg-[#141210] text-[#ede9e0] hidden md:flex flex-col flex-shrink-0 h-full border-r border-[#ede9e0]/8">
+      <aside className={`w-[280px] lg:w-[320px] bg-[#141210] text-[#ede9e0] ${viewMode === 'map' ? 'hidden' : 'hidden md:flex'} flex-col flex-shrink-0 h-full border-r border-[#ede9e0]/8`}>
         
         {/* Sidebar Brand Header */}
         <div className="px-6 pt-5 pb-4 border-b border-[#ede9e0]/8 shrink-0 flex items-center justify-between">
