@@ -124,8 +124,9 @@ jobs:
             # Pull new images with minimal interruption
             docker compose pull
 
-            # Recreate containers
-            docker compose up -d --remove-orphans
+            # Run migrations in a disposable container before starting the stack
+            # (avoids OOM from running alembic inside the live uvicorn container)
+            docker compose run --rm --no-deps backend alembic upgrade head
 
-            # Run Alembic migrations inside the backend container
-            docker compose exec -T backend alembic upgrade head
+            # Start / recreate all containers
+            docker compose up -d --remove-orphans
