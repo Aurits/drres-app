@@ -119,9 +119,13 @@ jobs:
             
             # Export Variables for Compose
             export GITHUB_REPOSITORY_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+            export DATABASE_URL="${{ secrets.DATABASE_URL }}"
 
-            # Pull limits the interruption
+            # Pull new images with minimal interruption
             docker compose pull
-            
+
             # Recreate containers
             docker compose up -d --remove-orphans
+
+            # Run Alembic migrations inside the backend container
+            docker compose exec -T backend alembic upgrade head

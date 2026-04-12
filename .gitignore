@@ -68,6 +68,20 @@ coverage/
 .turbo/
 next-env.d.ts
 
+# ─── FastAPI Specific ────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+celerybeat-schedule
+instance/
+.webassets-cache
+
 # ─── Uploaded Files & Temp ────────────────────
 uploads/
 temp/
