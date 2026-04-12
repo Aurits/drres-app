@@ -27,7 +27,11 @@ services:
     build:
       context: ./backend
     environment:
-      - PORT=8000
+      # Set DATABASE_URL in your .env file or as a server environment variable.
+      # It should point to your external PostgreSQL instance, e.g.:
+      # postgresql+asyncpg://user:pass@your-db-host:5432/drres
+      - DATABASE_URL=${DATABASE_URL}
     ports:
       - "8000"
     restart: always
+
